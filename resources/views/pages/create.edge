@@ -1,0 +1,62 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Site en création</title>
+    <style>
+        body {
+            margin: 0;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+            height: 100vh;
+            background-color: #f4f4f9;
+            color: #333;
+            font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, Helvetica, Arial, sans-serif;
+        }
+        h1 {
+            font-weight: 300;
+            letter-spacing: 1px;
+            margin-bottom: 10px;
+        }
+        #timer {
+            font-size: 1.2rem;
+            color: #666;
+        }
+    </style>
+</head>
+<body>
+
+    <h1>Site en création</h1>
+    <div id="timer">Calcul du temps écoulé...</div>
+
+    <script>
+        // Date de départ : 26 Janvier 2026 à 17h30
+        const startDate = new Date("2026-01-26T17:30:00").getTime();
+
+        function updateTimer() {
+            const now = new Date().getTime();
+            const diff = now - startDate;
+
+            if (diff < 0) {
+                document.getElementById("timer").innerHTML = "Lancement imminent...";
+                return;
+            }
+
+            const days = Math.floor(diff / (1000 * 60 * 60 * 24));
+            const hours = Math.floor((diff % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
+            const minutes = Math.floor((diff % (1000 * 60 * 60)) / (1000 * 60));
+            const seconds = Math.floor((diff % (1000 * 60)) / 1000);
+
+            document.getElementById("timer").innerHTML = 
+                `En ligne depuis : ${days}j ${hours}h ${minutes}m ${seconds}s`;
+        }
+
+        // Mise à jour chaque seconde
+        setInterval(updateTimer, 1000);
+        updateTimer();
+    </script>
+</body>
+</html>
