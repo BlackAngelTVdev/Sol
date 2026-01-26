@@ -9,7 +9,16 @@ export default defineConfig({
     }),
   ],
 
+  // AJOUTE ÇA ICI : 
+  // Ça dit à Vite : "N'utilise aucun plugin PostCSS, reste en CSS pur"
+  css: {
+    postcss: {
+      plugins: []
+    }
+  },
+
   server: {
     allowedHosts: ['dev-sol.laxacube.ch'],
+    host: '0.0.0.0', // Important si tu repasses sur Docker plus tard
   },
 })

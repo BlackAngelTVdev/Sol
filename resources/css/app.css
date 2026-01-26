@@ -1,10 +1,207 @@
-* {
+:root {
+  --sidebar-width: 280px;
+  --bg-main: #3F3182;       /* Le violet foncé du fond */
+  --bg-sidebar: #D9D9D9;    /* Le gris de la sidebar */
+  --accent-light: #B4C7F0;  /* Le bleu clair/violet des textes/boutons */
+  --text-dark: #333333;
+}
+
+body {
   margin: 0;
+  display: flex;
+  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+  background: var(--bg-main);
+  overflow: hidden;
+}
+
+/* SIDEBAR */
+aside {
+  width: var(--sidebar-width);
+  height: 100vh;
+  background: var(--bg-sidebar);
+  display: flex;
+  flex-direction: column;
+  padding: 30px;
+  box-sizing: border-box;
+  z-index: 10;
+}
+
+.logo-box {
+  width: 100%;
+  aspect-ratio: 1 / 1;
+  background: #A5A5A5;
+  border-radius: 20px;
+  margin-bottom: 50px;
+}
+
+nav ul {
+  list-style: none;
   padding: 0;
 }
 
-html,
-body {
-  height: 100%;
+nav li {
+  font-size: 1.4rem;
+  margin-bottom: 25px;
+  color: var(--text-dark);
+  cursor: pointer;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+}
+
+nav li:hover {
+  color: #000;
+  font-weight: bold;
+}
+
+.socials {
+  margin-top: auto;
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 10px;
+}
+
+.social-item {
+  width: 40px;
+  height: 40px;
+  background: #A5A5A5;
+  border-radius: 50%;
+}
+
+/* MAIN CONTENT */
+main {
+  flex: 1;
+  height: 100vh;
+  position: relative;
+}
+
+/* CAROUSEL SECTION */
+.carousel-container {
   width: 100%;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: relative;
+}
+
+.slide {
+  display: none; /* Cache toutes les slides par défaut */
+  width: 80%;
+  height: 60%;
+  text-align: center;
+  animation: fadeIn 0.8s; /* Petit effet de fondu */
+}
+
+.slide.active {
+  display: block; /* Affiche uniquement la slide active */
+}
+
+@keyframes fadeIn {
+  from { opacity: 0.3; }
+  to { opacity: 1; }
+}
+
+.placeholder-img {
+  width: 100%;
+  height: 100%;
+  background: rgba(165, 165, 165, 0.2);
+  border: 3px solid var(--accent-light);
+  border-radius: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+}
+
+.placeholder-img {
+  width: 60%;
+  height: 50%;
+  border: 2px dashed var(--accent-light);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin: 20px 0;
+}
+
+.nav-arrow {
+  position: absolute;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 4rem;
+  cursor: pointer;
+  user-select: none;
+}
+
+.arrow-prev { left: 40px; }
+.arrow-next { right: 40px; }
+
+.patreon-link {
+  position: absolute;
+  bottom: 50px;
+  background: var(--accent-light);
+  color: var(--bg-main);
+  padding: 12px 40px;
+  border-radius: 30px;
+  text-decoration: none;
+  font-weight: bold;
+}/* Le conteneur du carousel pour qu'il soit large comme sur ta maquette */
+.carousel-wrapper {
+    position: relative;
+    width: 100%;
+    height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #3F3182; /* Le violet de ta maquette */
+}
+
+/* Le style du placeholder (le rectangle gris avec la croix) */
+.slide-placeholder {
+    width: 80%;
+    height: 70%;
+    background-color: #A5A5A5; /* Gris comme sur ton image */
+    border-radius: 10px;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+}
+
+/* La croix (les deux lignes diagonales) */
+.slide-placeholder::before,
+.slide-placeholder::after {
+    content: "";
+    position: absolute;
+    width: 150%; /* Plus large pour couvrir la diagonale */
+    height: 2px;
+    background-color: rgba(0, 0, 0, 0.2); /* Lignes discrètes */
+}
+
+.slide-placeholder::before { transform: rotate(35deg); }
+.slide-placeholder::after { transform: rotate(-35deg); }
+
+/* Texte au centre du placeholder */
+.placeholder-text {
+    z-index: 2;
+    background: rgba(255, 255, 255, 0.8);
+    padding: 10px 20px;
+    border-radius: 5px;
+    color: #333;
+    font-weight: bold;
+    text-transform: uppercase;
+}
+
+/* Gestion de l'affichage des slides */
+.slide {
+    display: none;
+    width: 100%;
+    height: 100%;
+    justify-content: center;
+    align-items: center;
+}
+
+.slide.active {
+    display: flex;
 }

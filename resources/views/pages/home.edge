@@ -1,0 +1,29 @@
+@component('components/layout')
+  <div class="carousel-wrapper">
+    <div class="nav-arrow arrow-prev" onclick="changeSlide(-1)">◀</div>
+    
+    <div class="carousel-container" style="width: 100%; height: 100%;">
+      <div class="slide active">
+        <div class="slide-placeholder">
+          <div class="placeholder-text">Illustration 1</div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-placeholder">
+          <div class="placeholder-text">Illustration 2</div>
+        </div>
+      </div>
+
+      <div class="slide">
+        <div class="slide-placeholder">
+          <div class="placeholder-text">Illustration 3</div>
+        </div>
+      </div>
+    </div>
+
+    <div class="nav-arrow arrow-next" onclick="changeSlide(1)">▶</div>
+
+    <a href="#" class="patreon-link">liens Patreon</a>
+  </div>
+@end

@@ -1,0 +1,31 @@
+<!DOCTYPE html>
+<html>
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <title>Söl Portfolio</title>
+  @vite(['resources/css/app.css', 'resources/js/app.js'])
+</head>
+<body>
+  <aside>
+    <div class="logo-box"></div>
+    <nav>
+      <ul>
+        <li>Portfolio <span>▶</span></li>
+        <li>Commandes <span>▶</span></li>
+        <li>À propos</li>
+      </ul>
+    </nav>
+    <div class="socials">
+      <div class="social-item"></div>
+      <div class="social-item"></div>
+      <div class="social-item"></div>
+      <div class="social-item"></div>
+    </div>
+  </aside>
+
+  <main>
+    {{{ await $slots.main() }}}
+  </main>
+</body>
+</html>
