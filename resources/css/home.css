@@ -1,79 +1,94 @@
- @import url(./variables.css);
-
-/* Main / Carrousel */
+@import url(./variables.css);
 
 main {
+  margin: 0;
+  padding: 0;
+  display: flex;
   flex-grow: 1;
   background-color: var(--bg-carousel);
   position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden; 
 }
 
 .carousel-wrapper {
   width: 100%;
   height: 100%;
+  position: relative;
 }
 
 .slide {
   position: absolute;
   inset: 0;
+  width: 100%;
+  height: 100%;
   opacity: 0;
-  transition: opacity 0.8s ease-in-out; /* Anti-clignotement */
+  visibility: hidden;
+  /* Transition plus longue et fluide */
+  transition: opacity 1.2s cubic-bezier(0.4, 0, 0.2, 1), visibility 1.2s;
   display: flex;
   align-items: center;
   justify-content: center;
-  color: white;
 }
 
 .slide.active {
   opacity: 1;
+  visibility: visible;
   z-index: 5;
 }
 
-/* Flèches de la maquette */
+.slide-placeholder, .placeholder-text {
+  width: 100%;
+  height: 100%;
+  display: flex;
+}
+
+img.placeholder-image {
+  width: 100%;
+  height: 100%;
+  min-width: 100%;
+  min-height: 100%;
+  object-fit: cover; 
+  object-position: center;
+  border-radius: 0; 
+  display: block;
+  border: none;
+}
+
+/* UI fixes */
 .nav-arrow {
   position: absolute;
   top: 50%;
   transform: translateY(-50%);
   font-size: 3rem;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.4);
   cursor: pointer;
-  z-index: 10;
+  z-index: 100;
   user-select: none;
+  transition: all 0.3s ease;
+  text-shadow: 0 0 10px rgba(0,0,0,0.5);
 }
+
+.nav-arrow:hover { 
+  color: white; 
+  scale: 1.1; 
+}
+
 .arrow-prev { left: 30px; }
 .arrow-next { right: 30px; }
 
-/* Bouton Patreon en bas */
 .patreon-link {
   position: absolute;
   bottom: 40px;
   left: 50%;
   transform: translateX(-50%);
-  background-color: #94A3B8;
+  background-color: var(--btn-gray, #94A3B8);
   color: black;
   padding: 12px 40px;
   border-radius: 50px;
   text-decoration: none;
   font-weight: bold;
-  z-index: 10;
-}
-.placeholder-text {
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  width: 100%;
-  height: 100%;
-  overflow: hidden;
-}
-
-img.placeholder-image {
-  width: 80%; 
-  height: 70%; 
-  
-  margin: auto;
-  border-radius: 10px;
-  
-
-  object-fit: cover;
-  object-position: center;
+  z-index: 100;
+  box-shadow: 0 4px 15px rgba(0,0,0,0.3);
 }

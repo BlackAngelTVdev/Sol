@@ -7,11 +7,14 @@ router.on('/').render('pages/create')
 router.on('/home').render('pages/home')
 
 // Groupement des routes Portfolio
-router.group(() => {
-  router.on('/original').render('pages/portfolio/original')
-  router.on('/fanart').render('pages/portfolio/fanart')
-  router.on('/commandes').render('pages/portfolio/commandes')
-  router.on('/croquis').render('pages/portfolio/croquis')
-}).prefix('/portfolio')
+
+// Une seule route pour tout le portfolio
+router
+  .get('/portfolio', ({ request, view }) => {
+    const type = request.input('type', 'original')
+
+    return view.render('pages/portfolio', { type })
+  })
+  .as('portfolio')
 
 router.on('404').render('pages/errors/not_found')

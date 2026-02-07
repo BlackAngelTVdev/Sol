@@ -7,11 +7,9 @@ body {
   font-family: sans-serif;
 }
 
-/* Sidebar gauche */
 aside {
   width: 300px;
   background-color: var(--bg-sidebar);
-  border-right: 4px solid var(--accent-purple); /* La ligne violette de la maquette */
   display: flex;
   flex-direction: column;
   padding: 40px 20px;
@@ -72,7 +70,6 @@ nav li span {
   border-radius: 50%;
 }
 
-/* --- Menu & Sous-menus --- */
 .menu-item {
   width: 100%;
   display: flex;
@@ -80,28 +77,28 @@ nav li span {
   align-items: center;
   gap: 5px;
 }
+
 nav ul li {
   position: relative;
   list-style: none;
   padding: 10px 0;
   cursor: pointer;
 }
+
 .submenu {
-  /* 100% (le bord) + 20px d'espace vide */
-  left: calc(100% + 20px); 
-  
+  left: calc(100% + 15px);
   position: absolute;
   top: 0;
   background-color: var(--bg-sidebar);
-  border-left: 3px solid var(--accent-purple);
-  padding: 10px 20px;
-  min-width: 150px;
+  padding: 8px 0;
+  min-width: 180px;
   opacity: 0;
   visibility: hidden;
-  /* On garde le translateX pour l'effet d'entrée "chill" */
-  transform: translateX(10px); 
+  transform: translateX(10px);
   transition: all 0.3s ease;
-  z-index: 100;
+  z-index: 101;
+  box-shadow: 5px 5px 15px rgba(0, 0, 0, 0.1);
+  border-radius: 4px;
 }
 
 .has-submenu:hover .submenu {
@@ -111,21 +108,26 @@ nav ul li {
 }
 
 .submenu li {
-  padding: 5px 0;
-  font-size: 0.9rem;
+  padding: 0;
+  margin: 0;
+  width: 100%;
 }
 
 .submenu li a {
+  display: block;
+  padding: 12px 20px;
   text-decoration: none;
   color: #333;
-  transition: color 0.2s;
+  transition: all 0.2s;
+  width: 100%;
+  box-sizing: border-box;
 }
 
 .submenu li a:hover {
   color: var(--accent-purple);
+  background-color: rgba(0, 0, 0, 0.05);
 }
 
-/* --- Animations Icones --- */
 .has-submenu span {
   transition: transform 0.3s ease;
   display: inline-block;
@@ -135,4 +137,64 @@ nav ul li {
 .has-submenu:hover span {
   transform: rotate(180deg);
   color: var(--accent-purple);
+}
+
+.submenu::before {
+  content: "";
+  position: absolute;
+  top: 0;
+  left: -20px;
+  width: 20px;
+  height: 100%;
+}
+
+.socials {
+  margin-top: auto;
+  display: flex;
+  justify-content: space-around;
+  padding: 10px 0;
+}
+
+.social-icon-link {
+  width: 40px;
+  height: 40px;
+  background-color: #94A3B8;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  color: white;
+  text-decoration: none;
+  font-size: 1.2rem;
+  transition: all 0.3s ease;
+  border: 2px solid transparent;
+}
+
+.social-icon-link:hover {
+  color: white;
+  transform: translateY(-5px);
+}
+
+.social-icon-link.instagram:hover {
+  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 100%);
+  box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
+  border-color: transparent;
+}
+
+.social-icon-link.bluesky:hover {
+  background: #0085ff;
+  box-shadow: 0 0 20px rgba(0, 133, 255, 0.5);
+  border-color: transparent;
+}
+
+.social-icon-link.tiktok:hover {
+  background: #000;
+  box-shadow: 2px 2px 0 #ff0050, -2px -2px 0 #00f2ea;
+  border-color: transparent;
+}
+
+.social-icon-link.linktree:hover {
+  background: #43e660;
+  box-shadow: 0 0 20px rgba(67, 230, 96, 0.4);
+  border-color: transparent;
 }

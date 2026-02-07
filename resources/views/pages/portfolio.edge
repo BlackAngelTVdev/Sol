@@ -1,0 +1,15 @@
+@component('components/layout')
+  <div class="portfolio-container">
+    <h1>Section : {{ type }}</h1>
+
+    @if(type === 'original')
+      <p>Ici tes dessins originaux...</p>
+      @elseif(type === 'fanart')
+      <p>Ici tes fanarts...</p>
+    @elseif(type === 'croquis')
+      <p>Ici tes croquis...</p>
+    @else
+      <p>Section commandes</p>
+    @end
+  </div>
+@end

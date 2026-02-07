@@ -1,30 +1,36 @@
 let currentSlide = 0;
 const slides = document.querySelectorAll('.slide');
 
-// On expose la fonction au window pour le onclick du HTML
 window.changeSlide = function(direction) {
-    if (slides.length === 0) return;
+    if (slides.length <= 1) return;
 
-    // Masque l'actuelle
+    // Retire l'état actif
     slides[currentSlide].classList.remove('active');
 
-    // Calcule la nouvelle
+    // Calcule l'index suivant
     currentSlide = (currentSlide + direction + slides.length) % slides.length;
 
-    // Affiche la nouvelle
+    // Ajoute l'état actif (le CSS gère le fondu tout seul)
     slides[currentSlide].classList.add('active');
 }
 
-// Timer auto
-let slideInterval = setInterval(() => {
-    window.changeSlide(1);
-}, 6000);
+// Gestion du Timer automatique
+let slideInterval;
 
-// Pour que ce soit "chill" : si l'utilisateur clique, on reset le timer
+function startInterval(time = 10000) {
+    clearInterval(slideInterval);
+    slideInterval = setInterval(() => {
+        window.changeSlide(1);
+    }, time);
+}
+
+// Init
+startInterval();
+
+// Reset du timer au clic sur les flèches
 const arrows = document.querySelectorAll('.nav-arrow');
 arrows.forEach(arrow => {
     arrow.addEventListener('click', () => {
-        clearInterval(slideInterval);
-        slideInterval = setInterval(() => window.changeSlide(1), 6000);
+        startInterval(15000); // On laisse 15s de repos après un clic manuel
     });
 });
