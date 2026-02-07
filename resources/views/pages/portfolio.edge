@@ -1,15 +1,37 @@
-@component('components/layout')
-  <div class="portfolio-container">
-    <h1>Section : {{ type }}</h1>
+@component('components/layout', { css: 'port.css' })
+<main>
+  <div class="gallery-header">
+    <h1 style="text-align: center; font-weight: 300;">{{ type }}</h1>
+    @if(type !== 'commandes')
+    <div class="filter-nav">
+      {{-- Lien pour tout voir --}}
+      <a href="/portfolio?type={{ type }}"
+        style="padding-right: 20px; border-right: 1px solid #ccc; text-decoration: none; color: {{ !activeSerie ? 'black' : '#666' }}">
+        All
+      </a>
 
-    @if(type === 'original')
-      <p>Ici tes dessins originaux...</p>
-      @elseif(type === 'fanart')
-      <p>Ici tes fanarts...</p>
-    @elseif(type === 'croquis')
-      <p>Ici tes croquis...</p>
-    @else
-      <p>Section commandes</p>
+      @each(serieName in series)
+      <a href="/portfolio?type={{ type }}&serie={{ serieName }}"
+        style="padding-right: 20px; border-right: 1px solid #ccc; text-decoration: none; color: {{ activeSerie === serieName ? 'black' : '#666' }}">
+        {{ serieName }}
+      </a>
+      @end
+    </div>
+    @end
+
+  </div>
+
+  <div class="portfolio-grid">
+    {{-- On distribue les dessins --}}
+    @each((dessin, index) in dessins)
+    <div class="portfolio-item {{ index % 3 === 0 ? 'item-medium' : (index % 2 === 0 ? 'item-large' : 'item-small') }}">
+      <img src="{{ dessin.imageUrl }}" alt="{{ dessin.nom }}" loading="lazy">
+      <div class="dessin-info">
+        <h2 style="font-size: 1rem; text-transform: uppercase;">{{ dessin.nom }}</h2>
+        <p style="font-weight: bold;">{{ dessin.createdAt.toFormat('yyyy') }}</p>
+      </div>
+    </div>
     @end
   </div>
+</main>
 @end

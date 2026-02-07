@@ -1,3 +1,4 @@
+import DessinsController from '#controllers/dessins_controller'
 import router from '@adonisjs/core/services/router'
 
 // Ta page "Coming Soon"
@@ -8,13 +9,7 @@ router.on('/home').render('pages/home')
 
 // Groupement des routes Portfolio
 
-// Une seule route pour tout le portfolio
-router
-  .get('/portfolio', ({ request, view }) => {
-    const type = request.input('type', 'original')
-
-    return view.render('pages/portfolio', { type })
-  })
-  .as('portfolio')
+// Une seule route pour tout le portfoli
+router.get('/portfolio', [DessinsController, 'index']).as('portfolio')
 
 router.on('404').render('pages/errors/not_found')
