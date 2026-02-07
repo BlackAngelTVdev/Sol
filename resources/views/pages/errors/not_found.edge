@@ -1,8 +1,130 @@
-<h1>
-  404 - Page not found
-</h1>
-<p>
-  This template is rendered by the
-  <a href="http://docs.adonisjs.com/guides/exception-handling#status-pages">status pages feature</a>
-  of the global exception handler.
-</p>
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>404 - Mine Cassée</title>
+  <style>
+    :root {
+      --bg-dark: #555555;
+      --accent-red: #ef4444;
+      --pencil-yellow: #facc15;
+      --pencil-wood: #d97706;
+    }
+
+    body {
+      margin: 0;
+      height: 100vh;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+      background-color: var(--bg-dark);
+      color: white;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+      overflow: hidden;
+    }
+
+    .error-code {
+      font-size: 8rem;
+      font-weight: 900;
+      margin: 0;
+      color: var(--accent-red);
+      text-shadow: 4px 4px 0px rgba(0,0,0,0.2);
+    }
+
+    .message {
+      font-size: 1.5rem;
+      margin: 20px 0;
+      opacity: 0.8;
+    }
+
+    /* --- L'Animation du Crayon --- */
+    .art-container {
+      position: relative;
+      height: 200px;
+      width: 300px;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+    }
+
+    .pencil {
+      position: relative;
+      width: 200px;
+      height: 40px;
+      background: var(--pencil-yellow);
+      border-radius: 4px;
+      display: flex;
+      align-items: center;
+      animation: write 4s infinite ease-in-out;
+    }
+
+    /* La pointe en bois */
+    .pencil::before {
+      content: '';
+      position: absolute;
+      right: -30px;
+      border-left: 30px solid var(--pencil-wood);
+      border-top: 20px solid transparent;
+      border-bottom: 20px solid transparent;
+    }
+
+    /* La mine qui se casse */
+    .lead {
+      position: absolute;
+      right: -38px;
+      width: 8px;
+      height: 8px;
+      background: #333;
+      border-radius: 50%;
+      animation: break 4s infinite ease-in-out;
+    }
+
+    @keyframes write {
+      0%, 100% { transform: rotate(-5deg) translateX(0); }
+      45% { transform: rotate(5deg) translateX(20px); }
+      50% { transform: rotate(15deg) translateX(20px); } /* Moment du choc */
+    }
+
+    @keyframes break {
+      0%, 45% { transform: scale(1) translate(0, 0); opacity: 1; }
+      50% { transform: scale(1.2) translate(5px, 0); opacity: 1; }
+      60%, 100% { transform: scale(1) translate(40px, 100px) rotate(180deg); opacity: 0; }
+    }
+
+    /* Bouton Retour */
+    .back-btn {
+      margin-top: 40px;
+      padding: 12px 30px;
+      background-color: #3b82f6;
+      color: white;
+      text-decoration: none;
+      border-radius: 8px;
+      font-weight: bold;
+      transition: transform 0.2s, background 0.2s;
+    }
+
+    .back-btn:hover {
+      background-color: #2563eb;
+      transform: scale(1.05);
+    }
+  </style>
+</head>
+<body>
+
+  <h1 class="error-code">404</h1>
+  <p class="message">Oups ! La mine a craqué...</p>
+
+  <div class="art-container">
+    <div class="pencil">
+      <div class="lead"></div>
+    </div>
+  </div>
+
+  <p style="font-style: italic; opacity: 0.6;">La page que tu cherches a perdu le fil.</p>
+  
+  <a href="/home" class="back-btn">Retour au Portfolio</a>
+
+</body>
+</html>
