@@ -1,0 +1,8 @@
+:root {
+  --bg-sidebar: #E0E0E0;
+  --bg-carousel: #3D2F82;
+  --accent-purple: #8B5CF6; /* La couleur de ta bordure */
+  --text-blue: #00A3FF;
+  --btn-gray: #9CA3AF;
+  --transition-speed: 0.8s;
+}
