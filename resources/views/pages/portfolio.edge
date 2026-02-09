@@ -1,7 +1,7 @@
 @component('components/layout', { css: 'port.css' })
 <main>
   <div class="gallery-header">
-    <h1 style="text-align: center; font-weight: 300;">{{ type }}</h1>
+    <h1 style="text-align: center; font-weight: 300; text-transform: capitalize;">{{ type }}</h1>
     @if(type !== 'commandes')
     <div class="filter-nav">
       {{-- Lien pour tout voir --}}
@@ -28,6 +28,7 @@
       <img src="{{ dessin.imageUrl }}" alt="{{ dessin.nom }}" loading="lazy">
       <div class="dessin-info">
         <h2 style="font-size: 1rem; text-transform: uppercase;">{{ dessin.nom }}</h2>
+        <p>{{dessin.description}}</p>
         <p style="font-weight: bold;">{{ dessin.createdAt.toFormat('yyyy') }}</p>
       </div>
     </div>
