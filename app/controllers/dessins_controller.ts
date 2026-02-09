@@ -20,11 +20,29 @@ export default class DessinsController {
       .distinct('serie')
       .orderBy('serie', 'asc')
 
-    return view.render('pages/portfolio', { 
-      dessins, 
-      type, 
+    return view.render('pages/portfolio', {
+      dessins,
+      type,
       series: series.map(s => s.serie), // On envoie juste un tableau de strings
-      activeSerie: serieFilter 
+      activeSerie: serieFilter
     })
+  }
+  public async commandes({ view }: HttpContext) {
+    const commandes = await Dessin.query().where('type', 'commandes')
+
+    const kanban = {
+      pas_commence: commandes.filter(c => c.statut === 'pas_commence'),
+      en_cours: commandes.filter(c => c.statut === 'en_cours'),
+      // On trie par ID (ou date) décroissant et on prend les 5 premiers
+      termine: commandes
+        .filter(c => c.statut === 'termine')
+        .sort((a, b) => b.id - a.id) // Les plus récents en haut
+        .slice(0, 5),               // On garde seulement les 5 derniers
+    }
+
+    const totalSlots = 10
+    const slotsPris = commandes.filter(c => c.statut !== 'termine').length
+
+    return view.render('pages/commandes/kanban', { kanban, totalSlots, slotsPris })
   }
 }

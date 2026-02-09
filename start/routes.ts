@@ -11,5 +11,6 @@ router.on('/home').render('pages/home')
 
 // Une seule route pour tout le portfoli
 router.get('/portfolio', [DessinsController, 'index']).as('portfolio')
+router.get('/kanban', [DessinsController, 'commandes']).as('kanban')
 
 router.on('404').render('pages/errors/not_found')

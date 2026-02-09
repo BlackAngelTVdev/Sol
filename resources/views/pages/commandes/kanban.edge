@@ -1,0 +1,57 @@
+@component('components/layout', { css: 'commandes.css' })
+
+    <section class="slots-section">
+      <h1>Slots</h1>
+      <div class="stars-container">
+        {{-- On crée un tableau vide de la taille totalSlots pour boucler --}}
+        @each((_, i) in Array.from({ length: totalSlots }))
+          <span class="star {{ i < slotsPris ? 'pris' : 'disponible' }}">✦</span>
+        @end
+      </div>
+      <div class="legend">
+        <div class="legend-item"><span class="star disponible">✦</span> Disponible</div>
+        <div class="legend-item"><span class="star pris">✦</span> Pris</div>
+      </div>
+    </section>
+
+    <h1 class="kanban-title">Kanban</h1>
+    
+    <div class="kanban-container">
+      {{-- Colonne 1 --}}
+      <div class="kanban-column">
+        <div class="column-header">Pas commencé</div>
+        <div class="column-content">
+          @each(item in kanban.pas_commence)
+            <div class="star-item">✦</div>
+          @end
+        </div>
+      </div>
+
+      {{-- Colonne 2 --}}
+      <div class="kanban-column">
+        <div class="column-header">En cours</div>
+        <div class="column-content">
+          @each(item in kanban.en_cours)
+            <div class="star-item">✦</div>
+          @end
+        </div>
+      </div>
+
+      {{-- Colonne 3 --}}
+      <div class="kanban-column">
+        <div class="column-header">Terminé</div>
+        <div class="column-content">
+          @each(item in kanban.termine)
+            <div class="done-circle">
+              OPC{{ item.id }}
+            </div>
+          @end
+        </div>
+      </div>
+    </div>
+
+    <footer class="kanban-footer">
+      <p>Söl © 2026 - <a href="#">Mentions légales</a> - <a href="#">Autre liens</a></p>
+    </footer>
+
+@end

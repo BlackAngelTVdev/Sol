@@ -16,7 +16,8 @@ export default class Dessin extends BaseModel {
 
   @column()
   declare type: string
-
+  @column()
+  declare statut: string
   @column()
   declare imageUrl: string
 
