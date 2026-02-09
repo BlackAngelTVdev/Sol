@@ -6,6 +6,13 @@ body {
   height: 100vh;
   font-family: sans-serif;
 }
+main {
+
+  position: relative;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden; 
+}
 
 aside {
   width: 300px;

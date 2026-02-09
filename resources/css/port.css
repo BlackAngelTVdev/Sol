@@ -1,11 +1,6 @@
 @import url(./variables.css);
 
-html, body {
-  margin: 0;
-  padding: 0;
-  height: 100vh;
-  overflow: hidden;
-}
+
 
 .gallery-header {
   text-align: center;
@@ -14,10 +9,10 @@ html, body {
 
 main {
   flex-grow: 1;
-  height: 100vh;
+  padding: 40px 20px;
   overflow-y: auto;
   background-color: #ffffff;
-  padding: 40px 20px; 
+
   box-sizing: border-box;
   scrollbar-width: none;
   -ms-overflow-style: none;
