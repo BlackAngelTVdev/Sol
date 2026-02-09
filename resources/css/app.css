@@ -177,8 +177,14 @@ nav ul li {
 
 .social-icon-link.instagram:hover {
   background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 100%);
+  
+  background-origin: border-box;
+  background-clip: padding-box, border-box;
+
+  -webkit-mask-image: -webkit-radial-gradient(white, black);
+
   box-shadow: 0 0 20px rgba(138, 43, 226, 0.4);
-  border-color: transparent;
+  color: white;
 }
 
 .social-icon-link.bluesky:hover {
