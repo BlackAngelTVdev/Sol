@@ -1,9 +1,7 @@
 @component('components/layout', { css: 'commandes.css' })
-
     <section class="slots-section">
       <h1>Slots</h1>
       <div class="stars-container">
-        {{-- On crée un tableau vide de la taille totalSlots pour boucler --}}
         @each((_, i) in Array.from({ length: totalSlots }))
           <span class="star {{ i < slotsPris ? 'pris' : 'disponible' }}">✦</span>
         @end
@@ -17,41 +15,24 @@
     <h1 class="kanban-title">Kanban</h1>
     
     <div class="kanban-container">
-      {{-- Colonne 1 --}}
-      <div class="kanban-column">
-        <div class="column-header">Pas commencé</div>
-        <div class="column-content">
-          @each(item in kanban.pas_commence)
-            <div class="star-item">✦</div>
-          @end
+      {{-- On boucle sur les 3 colonnes avec la même logique --}}
+      @each(group in [
+        { title: 'Pas commencé', items: kanban.pas_commence },
+        { title: 'En cours', items: kanban.en_cours },
+        { title: 'Terminé', items: kanban.termine }
+      ])
+        <div class="kanban-column">
+          <div class="column-header">{{ group.title }}</div>
+          <div class="column-content">
+            @each(item in group.items)
+              <div class="kanban-item">
+                <div class="star-default">✦</div>
+                <div class="hover-bubble">OPC{{ item.id }}</div>
+              </div>
+            @end
+          </div>
         </div>
-      </div>
-
-      {{-- Colonne 2 --}}
-      <div class="kanban-column">
-        <div class="column-header">En cours</div>
-        <div class="column-content">
-          @each(item in kanban.en_cours)
-            <div class="star-item">✦</div>
-          @end
-        </div>
-      </div>
-
-      {{-- Colonne 3 --}}
-      <div class="kanban-column">
-        <div class="column-header">Terminé</div>
-        <div class="column-content">
-          @each(item in kanban.termine)
-            <div class="done-circle">
-              OPC{{ item.id }}
-            </div>
-          @end
-        </div>
-      </div>
+      @end
     </div>
-
-    <footer class="kanban-footer">
-      <p>Söl © 2026 - <a href="#">Mentions légales</a> - <a href="#">Autre liens</a></p>
-    </footer>
 
 @end
