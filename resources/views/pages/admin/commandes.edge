@@ -1,0 +1,88 @@
+@component('components/layout', { css: 'admin.css' })
+
+<!-- Champ CSRF caché pour les requêtes AJAX -->
+{{ csrfField() }}
+
+<div class="admin-header">
+  <div class="header-content">
+    <h1>Toutes les commandes</h1>
+    <a href="/admin" class="back-btn">← Retour au tableau de bord</a>
+  </div>
+</div>
+
+<div class="admin-content">
+  <div class="commandes-list">
+    @if(commandes.length === 0)
+      <div class="empty-state">
+        <p>Aucune commande pour le moment</p>
+      </div>
+    @else
+      <div class="table-wrapper">
+        <table class="commandes-table">
+          <thead>
+            <tr>
+              <th>Nom</th>
+              <th>Type</th>
+              <th>Statut</th>
+              <th>Visible</th>
+              <th>Date</th>
+              <th>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            @each(commande in commandes)
+              <tr class="table-row" data-id="{{ commande.id }}">
+                <td class="cell-name">
+                  <strong>{{ commande.nom }}</strong>
+                </td>
+                <td class="cell-type">
+                  <span class="type-tag">{{ commande.serie || 'N/A' }}</span>
+                </td>
+                <td class="cell-status">
+                  <span class="status-badge status-{{ commande.status }}">
+                    {{ commande.status === 'en_attente' ? 'En attente' : commande.status === 'en_cours' ? 'En cours' : 'Terminé' }}
+                  </span>
+                </td>
+                <td class="cell-visible">
+                  <button
+                    class="visibility-toggle"
+                    data-id="{{ commande.id }}"
+                    title="Cliquez pour basculer la visibilité"
+                  >
+                    @if(commande.isVisible)
+                      <span class="visible-icon">👁️</span> Oui
+                    @else
+                      <span class="hidden-icon">🚫</span> Non
+                    @endif
+                  </button>
+                </td>
+                <td class="cell-date">
+                  {{ commande.createdAt.toFormat('dd/MM/yy') }}
+                </td>
+                <td class="cell-actions">
+                  <a href="{{ route('showCommande', { id: commande.id }) }}" class="action-link details-link" title="Voir les détails">
+                    📋
+                  </a>
+                  <a href="{{ route('editForm', { id: commande.id }) }}" class="action-link edit-link" title="Éditer">
+                    ✏️
+                  </a>
+                  <button
+                    class="action-link delete-link"
+                    onclick="if(confirm('Supprimer cette commande ?')) deleteCommand({{ commande.id }})"
+                    title="Supprimer"
+                  >
+                    🗑️
+                  </button>
+                </td>
+              </tr>
+            @endeach
+          </tbody>
+        </table>
+      </div>
+    @endif
+  </div>
+</div>
+
+<script type="module" src="/js/admin.js"></script>
+
+@end

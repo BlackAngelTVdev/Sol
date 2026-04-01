@@ -1,5 +1,8 @@
 @component('components/layout', { css: 'admin.css' })
 
+<!-- Champ CSRF caché pour les requêtes AJAX -->
+{{ csrfField() }}
+
 <div class="admin-header">
   <div class="header-content">
     <h1>Tableau de bord admin</h1>
@@ -239,111 +242,6 @@
   </div>
 </div>
 
-<script>
-  // Mise à jour du statut via AJAX
-  document.querySelectorAll('.status-select').forEach((select) => {
-    select.addEventListener('change', async (e) => {
-      const id = e.target.dataset.id;
-      const status = e.target.value;
-
-      try {
-        const response = await fetch(`/admin/status/${id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
-          },
-          body: JSON.stringify({ id, status }),
-        });
-
-        if (response.ok) {
-          // Recharge la page pour mettre à jour l'affichage
-          location.reload();
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de la mise à jour du statut');
-      }
-    });
-  });
-
-  // Toggle visibilité
-  document.querySelectorAll('.visibility-btn').forEach((btn) => {
-    btn.addEventListener('click', async (e) => {
-      const id = btn.dataset.id;
-
-      try {
-        const response = await fetch(`/admin/visibility/${id}`, {
-          method: 'POST',
-          headers: {
-            'Content-Type': 'application/json',
-            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
-          },
-          body: JSON.stringify({ id }),
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          btn.innerHTML = data.isVisible ? '<span>👁️ Visible</span>' : '<span>🚫 Caché</span>';
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
-      }
-    });
-  });
-
-  // Upload d'image
-  document.querySelectorAll('.file-input').forEach((input) => {
-    input.addEventListener('change', async (e) => {
-      const id = e.target.dataset.id;
-      const file = e.target.files[0];
-
-      if (!file) return;
-
-      const formData = new FormData();
-      formData.append('image', file);
-
-      try {
-        const response = await fetch(`/admin/upload/${id}`, {
-          method: 'POST',
-          headers: {
-            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
-          },
-          body: formData,
-        });
-
-        if (response.ok) {
-          const data = await response.json();
-          // Recharge la page pour afficher la nouvelle image
-          location.reload();
-        } else {
-          const error = await response.json();
-          alert('Erreur: ' + error.error);
-        }
-      } catch (error) {
-        console.error('Erreur:', error);
-        alert('Erreur lors de l\'upload');
-      }
-    });
-  });
-
-  // Suppression de commande
-  async function deleteCommand(id) {
-    try {
-      const response = await fetch(`/admin/${id}`, {
-        method: 'DELETE',
-        headers: {
-          'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
-        },
-      });
-
-      if (response.ok) {
-        location.reload();
-      }
-    } catch (error) {
-      console.error('Erreur:', error);
-    }
-  }
-</script>
+<script type="module" src="/js/admin.js"></script>
 
 @end

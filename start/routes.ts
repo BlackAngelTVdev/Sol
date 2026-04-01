@@ -25,9 +25,17 @@ router.post('/passer-commande', [DessinsController, 'storeCommande']).as('storeC
 router
   .group(() => {
     router.get('/', [AdminController, 'dashboard']).as('dashboard')
+
+    // Routes pour les commandes
+    router.get('/commandes', [AdminController, 'commandes']).as('commandes')
+    router.get('/commandes/:id', [AdminController, 'showCommande']).as('showCommande')
+
+    // Routes AJAX pour les mises à jour
     router.post('/status/:id', [AdminController, 'updateStatus']).as('updateStatus')
     router.post('/visibility/:id', [AdminController, 'toggleVisibility']).as('toggleVisibility')
     router.post('/upload/:id', [AdminController, 'uploadImage']).as('uploadImage')
+
+    // Routes de gestion (édition/suppression)
     router.get('/edit/:id', [AdminController, 'editForm']).as('editForm')
     router.put('/edit/:id', [AdminController, 'update']).as('updateCommand')
     router.delete('/:id', [AdminController, 'delete']).as('deleteCommand')

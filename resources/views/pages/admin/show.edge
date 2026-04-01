@@ -1,0 +1,141 @@
+@component('components/layout', { css: 'admin.css' })
+
+<!-- Champ CSRF caché pour les requêtes AJAX -->
+{{ csrfField() }}
+
+<div class="admin-header">
+  <div class="header-content">
+    <h1>Détails de la commande</h1>
+    <a href="/admin/commandes" class="back-btn">← Retour à la liste</a>
+  </div>
+</div>
+
+<div class="admin-content detail-page">
+  <div class="detail-container">
+    <!-- En-tête avec statut -->
+    <div class="detail-header">
+      <div class="header-left">
+        <h2>{{ dessin.nom }}</h2>
+        <p class="detail-date">Créée le {{ dessin.createdAt.toFormat('dd/MM/yyyy à HH:mm') }}</p>
+      </div>
+      <div class="header-right">
+        <span class="status-badge status-{{ dessin.status }}">
+          {{ dessin.status === 'en_attente' ? 'En attente' : dessin.status === 'en_cours' ? 'En cours' : 'Terminé' }}
+        </span>
+        <button
+          class="visibility-btn"
+          data-id="{{ dessin.id }}"
+          title="Cliquez pour basculer la visibilité"
+        >
+          @if(dessin.isVisible)
+            <span>👁️ Visible au public</span>
+          @else
+            <span>🚫 Caché au public</span>
+          @endif
+        </button>
+      </div>
+    </div>
+
+    <!-- Contenu principal -->
+    <div class="detail-grid">
+      <!-- Colonne gauche : Image & Informations -->
+      <div class="detail-left">
+        <!-- Image de référence -->
+        @if(dessin.imagePath)
+          <div class="image-section">
+            <h3>Image de référence</h3>
+            <img src="{{ dessin.imagePath }}" alt="{{ dessin.nom }}" class="detail-image" />
+          </div>
+        @else
+          <div class="image-section no-image">
+            <p>Aucune image de référence fournie</p>
+          </div>
+        @endif
+
+        <!-- Informations rapides -->
+        <div class="info-section">
+          <h3>Informations</h3>
+          <div class="info-grid">
+            <div class="info-item">
+              <label>Statut</label>
+              <select class="status-select" data-id="{{ dessin.id }}">
+                <option value="en_attente" {{ dessin.status === 'en_attente' ? 'selected' : '' }}>
+                  En attente
+                </option>
+                <option value="en_cours" {{ dessin.status === 'en_cours' ? 'selected' : '' }}>
+                  En cours
+                </option>
+                <option value="termine" {{ dessin.status === 'termine' ? 'selected' : '' }}>
+                  Terminé
+                </option>
+              </select>
+            </div>
+
+            <div class="info-item">
+              <label>Visible</label>
+              <div class="visibility-indicator">
+                @if(dessin.isVisible)
+                  <span class="badge-visible">✓ Oui</span>
+                @else
+                  <span class="badge-hidden">✗ Non</span>
+                @endif
+              </div>
+            </div>
+
+            <div class="info-item full-width">
+              <label>Type</label>
+              <p class="readonly-text">{{ dessin.serie || 'Non spécifié' }}</p>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!-- Colonne droite : Description & Actions -->
+      <div class="detail-right">
+        <!-- Description complète -->
+        <div class="description-section">
+          <h3>Description</h3>
+          <div class="description-box">
+            @if(dessin.description)
+              <p>{{ dessin.description }}</p>
+            @else
+              <p class="no-description">Aucune description fournie</p>
+            @endif
+          </div>
+        </div>
+
+        <!-- Actions -->
+        <div class="actions-section">
+          <h3>Actions</h3>
+          <div class="action-buttons">
+            <a href="{{ route('editForm', { id: dessin.id }) }}" class="btn btn-primary">
+              ✏️ Éditer la commande
+            </a>
+            <button
+              class="btn btn-danger"
+              onclick="if(confirm('Êtes-vous certain de vouloir supprimer cette commande ?')) deleteCommand({{ dessin.id }})"
+            >
+              🗑️ Supprimer
+            </button>
+            <a href="/admin" class="btn btn-secondary">
+              📊 Retour au tableau de bord
+            </a>
+          </div>
+        </div>
+
+        <!-- Historique -->
+        <div class="history-section">
+          <h3>Historique</h3>
+          <div class="history-box">
+            <p><strong>Créée le :</strong> {{ dessin.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</p>
+            <p><strong>Dernière modification :</strong> {{ dessin.updatedAt.toFormat('dd/MM/yyyy HH:mm') }}</p>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</div>
+
+<script type="module" src="/js/admin.js"></script>
+
+@end

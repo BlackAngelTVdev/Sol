@@ -5,6 +5,29 @@ import app from '@adonisjs/core/services/app'
 import { extname } from 'node:path'
 
 export default class AdminController {
+  // Page de liste des commandes
+  async commandes({ view, auth }: HttpContext) {
+    await auth.authenticate()
+
+    const commandes = await Dessin.query().where('type', 'commandes').orderBy('created_at', 'desc')
+
+    return view.render('pages/admin/commandes', { commandes })
+  }
+
+  // Page de détails d'une commande
+  async showCommande({ view, params, auth }: HttpContext) {
+    await auth.authenticate()
+
+    const dessin = await Dessin.findOrFail(params.id)
+
+    // Vérifie que c'est bien une commande
+    if (dessin.type !== 'commandes') {
+      return view.render('pages/errors/not_found')
+    }
+
+    return view.render('pages/admin/show', { dessin })
+  }
+
   async dashboard({ view, auth }: HttpContext) {
     await auth.authenticate()
 
