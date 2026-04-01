@@ -1,0 +1,349 @@
+@component('components/layout', { css: 'admin.css' })
+
+<div class="admin-header">
+  <div class="header-content">
+    <h1>Tableau de bord admin</h1>
+    <form method="POST" action="{{ route('logout') }}" style="display: inline">
+      {{ csrfField() }}
+      <button type="submit" class="logout-btn">Déconnexion</button>
+    </form>
+  </div>
+</div>
+
+<div class="admin-content">
+  <!-- Vue Kanban -->
+  <div class="kanban-view">
+    <div class="kanban-column" data-status="en_attente">
+      <h2>En attente</h2>
+      <div class="kanban-items">
+        @each(commande in grouped.en_attente)
+          <div class="kanban-card" data-id="{{ commande.id }}">
+            <div class="card-header">
+              <h3>{{ commande.nom }}</h3>
+              <span class="badge en_attente">En attente</span>
+            </div>
+
+            @if(commande.imagePath)
+              <img src="{{ commande.imagePath }}" alt="{{ commande.nom }}" class="card-image" />
+            @else
+              <div class="card-image-placeholder">
+                <span>Pas d'image</span>
+              </div>
+            @endif
+
+            <p class="card-description">{{ commande.description?.substring(0, 100) || 'Pas de description' }}...</p>
+
+            <div class="card-actions">
+              <button
+                class="action-btn visibility-btn"
+                data-id="{{ commande.id }}"
+                title="{{ commande.isVisible ? 'Masquer' : 'Afficher' }}"
+              >
+                @if(commande.isVisible)
+                  <span>👁️ Visible</span>
+                @else
+                  <span>🚫 Caché</span>
+                @endif
+              </button>
+
+              <select class="status-select" data-id="{{ commande.id }}">
+                <option value="en_attente" {{ commande.status === 'en_attente' ? 'selected' : '' }}>
+                  En attente
+                </option>
+                <option value="en_cours" {{ commande.status === 'en_cours' ? 'selected' : '' }}>
+                  En cours
+                </option>
+                <option value="termine" {{ commande.status === 'termine' ? 'selected' : '' }}>
+                  Terminé
+                </option>
+              </select>
+
+              <a href="{{ route('editForm', { id: commande.id }) }}" class="action-btn edit-btn">
+                ✏️ Éditer
+              </a>
+
+              <button
+                class="action-btn delete-btn"
+                data-id="{{ commande.id }}"
+                title="Supprimer"
+                onclick="if(confirm('Êtes-vous sûr ?')) deleteCommand({{ commande.id }})"
+              >
+                🗑️ Supprimer
+              </button>
+            </div>
+
+            <div class="upload-area" data-id="{{ commande.id }}">
+              <input type="file" class="file-input" accept="image/*" data-id="{{ commande.id }}" />
+              <label class="upload-label">
+                📤 Changer l'image
+              </label>
+            </div>
+          </div>
+        @endeach
+
+        @if(grouped.en_attente.length === 0)
+          <p class="empty-column">Aucune commande en attente</p>
+        @endif
+      </div>
+    </div>
+
+    <!-- Colonne En cours -->
+    <div class="kanban-column" data-status="en_cours">
+      <h2>En cours</h2>
+      <div class="kanban-items">
+        @each(commande in grouped.en_cours)
+          <div class="kanban-card" data-id="{{ commande.id }}">
+            <div class="card-header">
+              <h3>{{ commande.nom }}</h3>
+              <span class="badge en_cours">En cours</span>
+            </div>
+
+            @if(commande.imagePath)
+              <img src="{{ commande.imagePath }}" alt="{{ commande.nom }}" class="card-image" />
+            @else
+              <div class="card-image-placeholder">
+                <span>Pas d'image</span>
+              </div>
+            @endif
+
+            <p class="card-description">{{ commande.description?.substring(0, 100) || 'Pas de description' }}...</p>
+
+            <div class="card-actions">
+              <button
+                class="action-btn visibility-btn"
+                data-id="{{ commande.id }}"
+                title="{{ commande.isVisible ? 'Masquer' : 'Afficher' }}"
+              >
+                @if(commande.isVisible)
+                  <span>👁️ Visible</span>
+                @else
+                  <span>🚫 Caché</span>
+                @endif
+              </button>
+
+              <select class="status-select" data-id="{{ commande.id }}">
+                <option value="en_attente" {{ commande.status === 'en_attente' ? 'selected' : '' }}>
+                  En attente
+                </option>
+                <option value="en_cours" {{ commande.status === 'en_cours' ? 'selected' : '' }}>
+                  En cours
+                </option>
+                <option value="termine" {{ commande.status === 'termine' ? 'selected' : '' }}>
+                  Terminé
+                </option>
+              </select>
+
+              <a href="{{ route('editForm', { id: commande.id }) }}" class="action-btn edit-btn">
+                ✏️ Éditer
+              </a>
+
+              <button
+                class="action-btn delete-btn"
+                data-id="{{ commande.id }}"
+                title="Supprimer"
+                onclick="if(confirm('Êtes-vous sûr ?')) deleteCommand({{ commande.id }})"
+              >
+                🗑️ Supprimer
+              </button>
+            </div>
+
+            <div class="upload-area" data-id="{{ commande.id }}">
+              <input type="file" class="file-input" accept="image/*" data-id="{{ commande.id }}" />
+              <label class="upload-label">
+                📤 Changer l'image
+              </label>
+            </div>
+          </div>
+        @endeach
+
+        @if(grouped.en_cours.length === 0)
+          <p class="empty-column">Aucune commande en cours</p>
+        @endif
+      </div>
+    </div>
+
+    <!-- Colonne Terminée -->
+    <div class="kanban-column" data-status="termine">
+      <h2>Terminé</h2>
+      <div class="kanban-items">
+        @each(commande in grouped.termine)
+          <div class="kanban-card" data-id="{{ commande.id }}">
+            <div class="card-header">
+              <h3>{{ commande.nom }}</h3>
+              <span class="badge termine">Terminé</span>
+            </div>
+
+            @if(commande.imagePath)
+              <img src="{{ commande.imagePath }}" alt="{{ commande.nom }}" class="card-image" />
+            @else
+              <div class="card-image-placeholder">
+                <span>Pas d'image</span>
+              </div>
+            @endif
+
+            <p class="card-description">{{ commande.description?.substring(0, 100) || 'Pas de description' }}...</p>
+
+            <div class="card-actions">
+              <button
+                class="action-btn visibility-btn"
+                data-id="{{ commande.id }}"
+                title="{{ commande.isVisible ? 'Masquer' : 'Afficher' }}"
+              >
+                @if(commande.isVisible)
+                  <span>👁️ Visible</span>
+                @else
+                  <span>🚫 Caché</span>
+                @endif
+              </button>
+
+              <select class="status-select" data-id="{{ commande.id }}">
+                <option value="en_attente" {{ commande.status === 'en_attente' ? 'selected' : '' }}>
+                  En attente
+                </option>
+                <option value="en_cours" {{ commande.status === 'en_cours' ? 'selected' : '' }}>
+                  En cours
+                </option>
+                <option value="termine" {{ commande.status === 'termine' ? 'selected' : '' }}>
+                  Terminé
+                </option>
+              </select>
+
+              <a href="{{ route('editForm', { id: commande.id }) }}" class="action-btn edit-btn">
+                ✏️ Éditer
+              </a>
+
+              <button
+                class="action-btn delete-btn"
+                data-id="{{ commande.id }}"
+                title="Supprimer"
+                onclick="if(confirm('Êtes-vous sûr ?')) deleteCommand({{ commande.id }})"
+              >
+                🗑️ Supprimer
+              </button>
+            </div>
+
+            <div class="upload-area" data-id="{{ commande.id }}">
+              <input type="file" class="file-input" accept="image/*" data-id="{{ commande.id }}" />
+              <label class="upload-label">
+                📤 Changer l'image
+              </label>
+            </div>
+          </div>
+        @endeach
+
+        @if(grouped.termine.length === 0)
+          <p class="empty-column">Aucune commande terminée</p>
+        @endif
+      </div>
+    </div>
+  </div>
+</div>
+
+<script>
+  // Mise à jour du statut via AJAX
+  document.querySelectorAll('.status-select').forEach((select) => {
+    select.addEventListener('change', async (e) => {
+      const id = e.target.dataset.id;
+      const status = e.target.value;
+
+      try {
+        const response = await fetch(`/admin/status/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
+          },
+          body: JSON.stringify({ id, status }),
+        });
+
+        if (response.ok) {
+          // Recharge la page pour mettre à jour l'affichage
+          location.reload();
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de la mise à jour du statut');
+      }
+    });
+  });
+
+  // Toggle visibilité
+  document.querySelectorAll('.visibility-btn').forEach((btn) => {
+    btn.addEventListener('click', async (e) => {
+      const id = btn.dataset.id;
+
+      try {
+        const response = await fetch(`/admin/visibility/${id}`, {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
+          },
+          body: JSON.stringify({ id }),
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          btn.innerHTML = data.isVisible ? '<span>👁️ Visible</span>' : '<span>🚫 Caché</span>';
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+      }
+    });
+  });
+
+  // Upload d'image
+  document.querySelectorAll('.file-input').forEach((input) => {
+    input.addEventListener('change', async (e) => {
+      const id = e.target.dataset.id;
+      const file = e.target.files[0];
+
+      if (!file) return;
+
+      const formData = new FormData();
+      formData.append('image', file);
+
+      try {
+        const response = await fetch(`/admin/upload/${id}`, {
+          method: 'POST',
+          headers: {
+            'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
+          },
+          body: formData,
+        });
+
+        if (response.ok) {
+          const data = await response.json();
+          // Recharge la page pour afficher la nouvelle image
+          location.reload();
+        } else {
+          const error = await response.json();
+          alert('Erreur: ' + error.error);
+        }
+      } catch (error) {
+        console.error('Erreur:', error);
+        alert('Erreur lors de l\'upload');
+      }
+    });
+  });
+
+  // Suppression de commande
+  async function deleteCommand(id) {
+    try {
+      const response = await fetch(`/admin/${id}`, {
+        method: 'DELETE',
+        headers: {
+          'X-CSRF-Token': document.querySelector('input[name="csrf_token"]')?.value,
+        },
+      });
+
+      if (response.ok) {
+        location.reload();
+      }
+    } catch (error) {
+      console.error('Erreur:', error);
+    }
+  }
+</script>
+
+@end

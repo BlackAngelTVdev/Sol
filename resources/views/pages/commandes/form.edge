@@ -1,0 +1,283 @@
+@component('components/layout', { css: 'commandes.css' })
+
+  <div class="command-form-container">
+    <!-- ÉTAPE 1: Informations Do's and Don'ts -->
+    <div class="form-step" id="step1" style="display: block;">
+      <h1>À savoir avant de passer commande</h1>
+      
+      <div class="dos-donts-container">
+        <div class="dos-column">
+          <h2>Do</h2>
+          <ul>
+            <li>Soyez précis dans votre description</li>
+            <li>Fournissez des références visuelles</li>
+            <li>Mentionnez les couleurs préférées</li>
+            <li>Soyez réaliste sur les délais</li>
+            <li>Vérifiez votre orthographe</li>
+            <li>Anticipez les détails</li>
+          </ul>
+        </div>
+
+        <div class="donts-column">
+          <h2>Don't</h2>
+          <ul>
+            <li>Ne soyez pas vague</li>
+            <li>N'oubliez pas les détails importants</li>
+            <li>Ne pressez pas l'artiste</li>
+            <li>Ne dépassez pas le scope initial</li>
+            <li>Ne plagiiez pas d'autres œuvres</li>
+            <li>N'exigez pas d'exclusivité</li>
+          </ul>
+        </div>
+      </div>
+
+      <div class="form-buttons">
+        <button 
+          type="button" 
+          class="submit-btn"
+          onclick="goToStep(2)"
+          {{ slotsDisponibles === 0 ? 'disabled' : '' }}
+        >
+          Continuer
+        </button>
+      </div>
+    </div>
+
+    <!-- ÉTAPE 2: Formulaire de sélection -->
+    <div class="form-step" id="step2" style="display: none;">
+      <h1>Passer commande</h1>
+
+      <form method="POST" action="{{ route('storeCommande') }}" id="commandeForm">
+        {{ csrfField() }}
+
+        <!-- Nom complet -->
+        <div class="form-group">
+          <label for="nom">Nom complet</label>
+          <input 
+            type="text" 
+            id="nom" 
+            name="nom" 
+            required
+            placeholder="Votre nom"
+            {{ slotsDisponibles === 0 ? 'disabled' : '' }} 
+          >
+        </div>
+
+        <!-- Type - Catégorisé -->
+        <div class="form-group">
+          <label>Type de commande</label>
+          <p style="font-size: 0.85rem; color: #0066cc; margin-bottom: 15px;">Sélectionnez les catégories qui correspondent à votre besoin</p>
+          
+          <!-- Catégorie 1: Sujet -->
+          <div class="type-category">
+            <h3>Sujet</h3>
+            <div class="type-buttons-grid">
+              <button type="button" class="type-btn" data-type="Fanart" data-category="sujet">Fanart</button>
+              <button type="button" class="type-btn" data-type="OC" data-category="sujet">OC</button>
+              <button type="button" class="type-btn" data-type="Original" data-category="sujet">Original</button>
+            </div>
+          </div>
+
+          <!-- Catégorie 2: Cadrage -->
+          <div class="type-category">
+            <h3>Cadrage</h3>
+            <div class="type-buttons-grid">
+              <button type="button" class="type-btn" data-type="Corps entier" data-category="cadrage">Corps entier</button>
+              <button type="button" class="type-btn" data-type="Hanches" data-category="cadrage">Hanches</button>
+              <button type="button" class="type-btn" data-type="Portrait" data-category="cadrage">Portrait</button>
+            </div>
+          </div>
+
+          <!-- Catégorie 3: Fond -->
+          <div class="type-category">
+            <h3>Fond</h3>
+            <div class="type-buttons-grid">
+              <button type="button" class="type-btn" data-type="Sans fond" data-category="fond">Sans fond</button>
+              <button type="button" class="type-btn" data-type="Avec fond" data-category="fond">Avec fond</button>
+            </div>
+          </div>
+
+          <!-- Catégorie 4: Couleurs -->
+          <div class="type-category">
+            <h3>Couleurs</h3>
+            <div class="type-buttons-grid">
+              <button type="button" class="type-btn" data-type="Couleurs" data-category="couleurs">Couleurs</button>
+              <button type="button" class="type-btn" data-type="Traits/N&B" data-category="couleurs">Traits/N&B</button>
+            </div>
+          </div>
+
+          <!-- Catégorie 5: Niveau de détail -->
+          <div class="type-category">
+            <h3>Niveau de détail</h3>
+            <div class="type-buttons-grid">
+              <button type="button" class="type-btn" data-type="Croquis" data-category="detail">Croquis</button>
+              <button type="button" class="type-btn" data-type="Simple" data-category="detail">Simple</button>
+              <button type="button" class="type-btn" data-type="Détaillé" data-category="detail">Détaillé</button>
+              <button type="button" class="type-btn" data-type="Chibi" data-category="detail">Chibi</button>
+            </div>
+          </div>
+
+          <div class="selected-types-display" id="selectedTypesDisplay">
+            <p style="color: #666; font-size: 0.9rem; margin: 0;">Aucune sélection pour le moment</p>
+          </div>
+          <input type="hidden" id="type" name="type" required>
+        </div>
+
+        <!-- Description -->
+        <div class="form-group">
+          <label for="description">Description</label>
+          <textarea 
+            id="description" 
+            name="description" 
+            rows="6"
+            required
+            placeholder="Décrivez votre commande en détail..."
+            {{ slotsDisponibles === 0 ? 'disabled' : '' }}
+          ></textarea>
+        </div>
+
+        <!-- Boutons de navigation -->
+        <div class="form-buttons">
+          <button 
+            type="button" 
+            class="submit-btn secondary"
+            onclick="goToStep(1)"
+          >
+            Retour
+          </button>
+          <button 
+            type="submit" 
+            class="submit-btn"
+            {{ slotsDisponibles === 0 ? 'disabled' : '' }}
+          >
+            Envoyer
+          </button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <style>
+    .dos-donts-container {
+      display: grid;
+      grid-template-columns: 1fr 1fr;
+      gap: 60px;
+      max-width: 900px;
+      margin: 0 auto 40px;
+    }
+
+    .dos-column, .donts-column {
+      padding: 30px;
+      background-color: #f9f9f9;
+      border-radius: 10px;
+    }
+
+    .type-category {
+      margin-bottom: 25px;
+      padding-bottom: 25px;
+      border-bottom: 1px solid #e0e0e0;
+    }
+
+    .type-category:last-child {
+      border-bottom: none;
+    }
+
+    .type-buttons-grid {
+      display: grid;
+      grid-template-columns: repeat(auto-fit, minmax(120px, 1fr));
+      gap: 10px;
+    }
+
+    .selected-types-display {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 8px;
+      align-items: center;
+    }
+
+    .selected-tag {
+      background-color: #7C5FA0;
+      color: white;
+      padding: 6px 12px;
+      border-radius: 15px;
+      font-size: 0.85rem;
+      display: inline-block;
+    }
+
+    .selected-tag .remove {
+      margin-left: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    @media (max-width: 768px) {
+      .dos-donts-container {
+        grid-template-columns: 1fr;
+      }
+    }
+  </style>
+
+<script>
+  document.addEventListener('DOMContentLoaded', () => {
+    const selectedTypes = new Set();
+    const mainElement = document.querySelector('main'); // Cible le main
+    const typeInput = document.getElementById('type');
+    const display = document.getElementById('selectedTypesDisplay');
+
+    // NAVIGATION ENTRE ÉTAPES
+    window.goToStep = function(stepNumber) {
+      // 1. On cache tout
+      document.querySelectorAll('.form-step').forEach(step => {
+        step.style.display = 'none';
+      });
+
+      // 2. On affiche l'étape
+      const nextStep = document.getElementById('step' + stepNumber);
+      if (nextStep) {
+        nextStep.style.display = 'block';
+      }
+
+      // 3. ON REMONTE LE SCROLL DU MAIN
+      if (mainElement) {
+        mainElement.scrollTop = 0;
+      }
+    };
+
+    // GESTION DES BOUTONS (Multi-sélection)
+    const typeButtons = document.querySelectorAll('.type-btn');
+    typeButtons.forEach(btn => {
+      btn.addEventListener('click', (e) => {
+        e.preventDefault();
+        const val = btn.dataset.type;
+
+        if (selectedTypes.has(val)) {
+          selectedTypes.delete(val);
+          btn.classList.remove('active');
+        } else {
+          selectedTypes.add(val);
+          btn.classList.add('active');
+        }
+        
+        // Mise à jour de l'input caché et de l'affichage
+        if (typeInput) typeInput.value = Array.from(selectedTypes).join(', ');
+        updateTagDisplay();
+      });
+    });
+
+    function updateTagDisplay() {
+      if (!display) return;
+      if (selectedTypes.size === 0) {
+        display.innerHTML = '<p style="color: #666; font-size: 0.9rem; margin: 0;">Aucune sélection</p>';
+      } else {
+        display.innerHTML = Array.from(selectedTypes).map(t => `
+          <span class="selected-tag" style="background:#7c5fa0; color:white; padding:5px 15px; border-radius:20px; margin-right:5px; display:inline-block;">
+            ${t}
+          </span>
+        `).join('');
+      }
+    }
+  });
+</script>
+
+@end
+

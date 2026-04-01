@@ -10,16 +10,27 @@ export default class Dessin extends BaseModel {
 
   @column()
   declare description: string | null
-  // Dans app/models/dessin.ts
+
   @column()
   declare serie: string | null
 
   @column()
   declare type: string
+
   @column()
   declare statut: string
+
   @column()
   declare imageUrl: string
+
+  @column()
+  declare isVisible: boolean
+
+  @column()
+  declare status: string
+
+  @column()
+  declare imagePath: string | null
 
   @column.dateTime({ autoCreate: true })
   declare createdAt: DateTime

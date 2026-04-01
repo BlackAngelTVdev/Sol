@@ -1,0 +1,49 @@
+@component('components/layout', { css: 'admin.css' })
+
+<div class="admin-header">
+  <div class="header-content">
+    <h1>Éditer : {{ dessin.nom }}</h1>
+    <a href="/admin" class="back-btn">← Retour</a>
+  </div>
+</div>
+
+<div class="admin-content edit-page">
+  <form method="POST" action="{{ route('updateCommand', { id: dessin.id }) }}" class="edit-form">
+    {{ csrfField() }}
+    @method('PUT')
+
+    <div class="form-group">
+      <label for="nom">Nom de la commande</label>
+      <input type="text" id="nom" name="nom" value="{{ dessin.nom }}" required />
+    </div>
+
+    <div class="form-group">
+      <label for="description">Description</label>
+      <textarea id="description" name="description" rows="6">{{ dessin.description }}</textarea>
+    </div>
+
+    <div class="form-group">
+      <label>Type</label>
+      <p class="readonly-field">{{ dessin.serie }}</p>
+    </div>
+
+    <div class="form-group">
+      <label>Créée le</label>
+      <p class="readonly-field">{{ dessin.createdAt.toFormat('dd/MM/yyyy HH:mm') }}</p>
+    </div>
+
+    <div class="form-actions">
+      <button type="submit" class="submit-btn">Enregistrer les modifications</button>
+      <a href="/admin" class="cancel-btn">Annuler</a>
+    </div>
+  </form>
+
+  @if(dessin.imagePath)
+    <div class="image-preview">
+      <h3>Image actuelle</h3>
+      <img src="{{ dessin.imagePath }}" alt="{{ dessin.nom }}" />
+    </div>
+  @endif
+</div>
+
+@end

@@ -1,0 +1,163 @@
+<!DOCTYPE html>
+<html lang="fr">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Connexion - Admin</title>
+    <style>
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      body {
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        min-height: 100vh;
+      }
+
+      .login-container {
+        background: white;
+        padding: 60px 40px;
+        border-radius: 15px;
+        box-shadow: 0 20px 60px rgba(0, 0, 0, 0.3);
+        width: 100%;
+        max-width: 400px;
+      }
+
+      .login-container h1 {
+        text-align: center;
+        color: #333;
+        margin-bottom: 10px;
+        font-size: 2rem;
+        font-weight: 300;
+      }
+
+      .login-container p {
+        text-align: center;
+        color: #999;
+        margin-bottom: 40px;
+        font-size: 0.95rem;
+      }
+
+      .form-group {
+        margin-bottom: 25px;
+        display: flex;
+        flex-direction: column;
+      }
+
+      .form-group label {
+        font-size: 0.95rem;
+        font-weight: 600;
+        margin-bottom: 10px;
+        color: #333;
+      }
+
+      .form-group input {
+        padding: 12px 15px;
+        border: none;
+        border-radius: 8px;
+        background-color: #d9d7e8;
+        font-size: 0.95rem;
+        font-family: inherit;
+        color: #333;
+        transition: background-color 0.3s ease;
+      }
+
+      .form-group input:focus {
+        outline: none;
+        background-color: #c2bed6;
+      }
+
+      .error-message {
+        background-color: #ffe0e0;
+        color: #d84545;
+        padding: 12px 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        font-size: 0.9rem;
+        display: none;
+      }
+
+      .error-message.show {
+        display: block;
+      }
+
+      .submit-btn {
+        width: 100%;
+        padding: 14px;
+        background-color: #7c5fa0;
+        color: white;
+        border: none;
+        border-radius: 8px;
+        font-size: 1rem;
+        font-weight: 600;
+        cursor: pointer;
+        transition: all 0.3s ease;
+        margin-top: 10px;
+      }
+
+      .submit-btn:hover {
+        background-color: #6a4d8a;
+        transform: translateY(-2px);
+        box-shadow: 0 5px 15px rgba(124, 95, 160, 0.4);
+      }
+
+      @media (max-width: 480px) {
+        .login-container {
+          padding: 40px 25px;
+        }
+
+        .login-container h1 {
+          font-size: 1.5rem;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <div class="login-container">
+      <h1>Connexion</h1>
+      <p>Accès administrateur</p>
+
+      <div class="error-message" id="errorMessage"></div>
+
+      <form method="POST" action="{{ route('loginSubmit') }}">
+        {{ csrfField() }}
+
+        <div class="form-group">
+          <label for="email">Email</label>
+          <input
+            type="email"
+            id="email"
+            name="email"
+            placeholder="admin@example.com"
+            required
+            autofocus
+          />
+        </div>
+
+        <div class="form-group">
+          <label for="password">Mot de passe</label>
+          <input type="password" id="password" name="password" placeholder="••••••••" required />
+        </div>
+
+        <button type="submit" class="submit-btn">Se connecter</button>
+      </form>
+    </div>
+
+    <script>
+      // Affiche les erreurs Flash si présentes
+      const errorBag = {{ JSON.stringify(errors || {}) }};
+      if (Object.keys(errorBag).length > 0) {
+        const errorMessage = document.getElementById('errorMessage');
+        const messages = Object.values(errorBag).flat();
+        errorMessage.textContent = messages.join(', ');
+        errorMessage.classList.add('show');
+      }
+    </script>
+  </body>
+</html>

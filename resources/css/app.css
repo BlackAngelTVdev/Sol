@@ -7,11 +7,10 @@ body {
   font-family: sans-serif;
 }
 main {
-
   position: relative;
   height: 100vh;
   width: 100%;
-  overflow: hidden; 
+  overflow: hidden;
 }
 
 aside {
@@ -26,7 +25,7 @@ aside {
 .logo-box {
   width: 150px;
   height: 150px;
-  background-color: #94A3B8;
+  background-color: #94a3b8;
   border-radius: 20px;
   margin-bottom: 50px;
   display: flex;
@@ -49,7 +48,7 @@ nav li {
 }
 
 nav li span {
-  color: #94A3B8;
+  color: #94a3b8;
   font-size: 1.2rem;
 }
 
@@ -73,7 +72,7 @@ nav li span {
 .social-item {
   width: 35px;
   height: 35px;
-  background-color: #94A3B8;
+  background-color: #94a3b8;
   border-radius: 50%;
 }
 
@@ -147,7 +146,7 @@ nav ul li {
 }
 
 .submenu::before {
-  content: "";
+  content: '';
   position: absolute;
   top: 0;
   left: -20px;
@@ -165,7 +164,7 @@ nav ul li {
 .social-icon-link {
   width: 40px;
   height: 40px;
-  background-color: #94A3B8;
+  background-color: #94a3b8;
   border-radius: 50%;
   display: flex;
   align-items: center;
@@ -183,8 +182,15 @@ nav ul li {
 }
 
 .social-icon-link.instagram:hover {
-  background: radial-gradient(circle at 30% 107%, #fdf497 0%, #fdf497 5%, #fd5949 45%, #d6249f 60%, #285AEB 100%);
-  
+  background: radial-gradient(
+    circle at 30% 107%,
+    #fdf497 0%,
+    #fdf497 5%,
+    #fd5949 45%,
+    #d6249f 60%,
+    #285aeb 100%
+  );
+
   background-origin: border-box;
   background-clip: padding-box, border-box;
 
@@ -202,7 +208,9 @@ nav ul li {
 
 .social-icon-link.tiktok:hover {
   background: #000;
-  box-shadow: 2px 2px 0 #ff0050, -2px -2px 0 #00f2ea;
+  box-shadow:
+    2px 2px 0 #ff0050,
+    -2px -2px 0 #00f2ea;
   border-color: transparent;
 }
 
@@ -210,4 +218,27 @@ nav ul li {
   background: #43e660;
   box-shadow: 0 0 20px rgba(67, 230, 96, 0.4);
   border-color: transparent;
+}
+
+/* Admin menu styling */
+.admin-menu {
+  border-top: 1px solid rgba(0, 0, 0, 0.1);
+  padding-top: 15px !important;
+  margin-top: auto !important;
+}
+
+.admin-menu a {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  text-decoration: none;
+  color: #7c5fa0;
+  font-weight: 600;
+  padding: 10px 0;
+  transition: all 0.3s ease;
+}
+
+.admin-menu a:hover {
+  color: #6a4d8a;
+  transform: translateX(5px);
 }

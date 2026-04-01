@@ -23,26 +23,62 @@ export default class DessinsController {
     return view.render('pages/portfolio', {
       dessins,
       type,
-      series: series.map(s => s.serie), // On envoie juste un tableau de strings
-      activeSerie: serieFilter
+      series: series.map((s) => s.serie), // On envoie juste un tableau de strings
+      activeSerie: serieFilter,
     })
   }
   public async commandes({ view }: HttpContext) {
     const commandes = await Dessin.query().where('type', 'commandes')
 
     const kanban = {
-      pas_commence: commandes.filter(c => c.statut === 'pas_commence'),
-      en_cours: commandes.filter(c => c.statut === 'en_cours'),
+      pas_commence: commandes.filter((c) => c.statut === 'pas_commence'),
+      en_cours: commandes.filter((c) => c.statut === 'en_cours'),
       // On trie par ID (ou date) décroissant et on prend les 5 premiers
       termine: commandes
-        .filter(c => c.statut === 'termine')
+        .filter((c) => c.statut === 'termine')
         .sort((a, b) => b.id - a.id) // Les plus récents en haut
-        .slice(0, 5),               // On garde seulement les 5 derniers
+        .slice(0, 5), // On garde seulement les 5 derniers
     }
 
     const totalSlots = 10
-    const slotsPris = commandes.filter(c => c.statut !== 'termine').length
+    const slotsPris = commandes.filter((c) => c.statut !== 'termine').length
 
     return view.render('pages/commandes/kanban', { kanban, totalSlots, slotsPris })
+  }
+
+  public async commandeForm({ view }: HttpContext) {
+    // Récupérer le nombre de slots disponibles
+    const commandes = await Dessin.query().where('type', 'commandes')
+    const totalSlots = 10
+    const slotsPris = commandes.filter((c) => c.statut !== 'termine').length
+    const slotsDisponibles = totalSlots - slotsPris
+
+    return view.render('pages/commandes/form', { slotsDisponibles, totalSlots, slotsPris })
+  }
+
+  public async storeCommande({ request, response }: HttpContext) {
+    // Vérifier qu'il y a de la place
+    const commandes = await Dessin.query().where('type', 'commandes')
+    const totalSlots = 10
+    const slotsPris = commandes.filter((c) => c.statut !== 'termine').length
+
+    if (slotsPris >= totalSlots) {
+      return response.status(400).json({ error: 'Pas de place disponible' })
+    }
+
+    // Récupérer les données du formulaire
+    const { nom, type, description } = request.all()
+
+    // Créer la commande
+    await Dessin.create({
+      nom,
+      description,
+      type: 'commandes',
+      serie: type || null,
+      statut: 'pas_commence',
+      imageUrl: '/images/placeholder.jpg', // Image placeholder pour les commandes
+    })
+
+    return response.redirect(`/kanban`)
   }
 }
